@@ -11,4 +11,4 @@ export const DEFAULT_SOCKET_MESSAGE = JSON.stringify({
 export const SOCKET_STATUS_ON = 'on';
 export const SOCKET_STATUS_OFF = 'off';
 export const SOCKET_STATUS_CONNECTING = 'connecting';
-export const SOCKET_STATUS_CLOSEING = 'closing';
+export const SOCKET_STATUS_CLOSING = 'closing';

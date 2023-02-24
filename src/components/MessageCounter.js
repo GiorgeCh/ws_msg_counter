@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../assets/styles/components/ConnectionBox.module.css';
-import { useMessagesContext } from '../contexts/MessagesContext';
-import { useCounterContext } from '../contexts/CounterContext';
+import { useMessagesContext } from '../contexts/MessagesContext.js';
+import { useCounterContext } from '../contexts/CounterContext.js';
 
 const ConnectionBox = () => {
     const { lastMessage } = useMessagesContext();
@@ -15,7 +15,7 @@ const ConnectionBox = () => {
 
     return (
         <div className={styles.container}>
-            <label>{counter}</label>
+            <label className={styles.counter}>{counter}</label>
             <label>{lastMessage}</label>
         </div>
     );

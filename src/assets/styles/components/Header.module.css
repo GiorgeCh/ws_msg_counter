@@ -1,0 +1,10 @@
+.container {
+  height: 70px;
+  background-color: black;
+}
+
+.header_text{
+  color: white;
+  text-align: center;
+  margin: 0;
+}

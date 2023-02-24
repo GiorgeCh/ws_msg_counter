@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
-import { useSocketContext } from '../contexts/SocketContext';
-import { useMessagesContext } from '../contexts/MessagesContext';
-import { useCounterContext } from '../contexts/CounterContext';
-import { SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket';
+import React, { useState, useEffect } from 'react';
+import { useSocketContext } from '../contexts/SocketContext.js';
+import { useMessagesContext } from '../contexts/MessagesContext.js';
+import { useCounterContext } from '../contexts/CounterContext.js';
+import { SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket.js';
 
 
 const WebSocketComponent = (props) => {
   const { connectionStatus, setConnectionStatus, url, wsMsg } = useSocketContext();
   const { setLastMessage } = useMessagesContext();
-  const { counter, setCounter } = useCounterContext();
+  const { addToCounter } = useCounterContext();
 
   const [socket, setSocket] = useState(null);
 
+  //handles toggling of the websocket connection
   useEffect(() => {
     switch (connectionStatus) {
       case SOCKET_STATUS_CONNECTING:
@@ -26,6 +27,7 @@ const WebSocketComponent = (props) => {
 
   }, [connectionStatus]);
 
+  //sends a message when wsMsg is set and the websocket conneciton is on
   useEffect(() => {
     if (connectionStatus === SOCKET_STATUS_ON && typeof wsMsg === 'string') {
       socket.send(wsMsg);
@@ -42,14 +44,16 @@ const WebSocketComponent = (props) => {
     };
 
     ws.onmessage = (msg) => {
-      const msgdata = JSON.parse(msg.data);
+      //const msgdata = JSON.parse(msg.data);
+      const msgdata = msg.data;
       console.log("socket onmessage", msgdata);
       setLastMessage(msgdata);
-      setCounter(counter++);
+      addToCounter();
     };
   };
 
   const closeSocket = () => {
+    if (!socket) return;
     console.log("socket is closing");
     socket.close();
     setConnectionStatus(SOCKET_STATUS_OFF);
