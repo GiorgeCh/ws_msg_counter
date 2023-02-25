@@ -1,7 +1,8 @@
 import React from 'react';
+import { Container } from '@mui/material';
 
 import ContextStore from '../modules/ContextStore.js';
-import styles from '../assets/styles/pages/App.module.css';
+import { MuiSkinThemeProvider } from '../assets/themes/MuiTheme.js';
 
 import WebsocketModule from '../modules/WebsocketModule.js';
 import ConnectionBox from '../components/ConnectionBox.js';
@@ -12,12 +13,28 @@ function App() {
 
   return (
     <ContextStore>
-      <WebsocketModule/>
-      <div className={styles.centerWindow}>
-        <Header/>
-        <ConnectionBox/>
-        <MessageCounter/>
-      </div>
+      <MuiSkinThemeProvider>
+
+        <WebsocketModule />
+        <Container
+          maxWidth="md"
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            bgcolor: 'primary.main',
+            border: 1,
+            borderColor: 'primary.border',
+            padding: '0!important'
+          }}
+        >
+          <Header />
+          <ConnectionBox />
+          <MessageCounter />
+        </Container>
+
+      </MuiSkinThemeProvider>
     </ContextStore>
   );
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Container } from '@mui/material';
+
 import styles from '../assets/styles/components/ConnectionBox.module.css';
 import { useSocketContext } from '../contexts/SocketContext.js';
 import { DEFAULT_SOCKET_URL, DEFAULT_SOCKET_MESSAGE, SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket.js';
@@ -9,11 +11,11 @@ const ConnectionBox = () => {
     let msgInputValue = DEFAULT_SOCKET_MESSAGE;
 
     const onSocketButton = () => {
-        if(connectionStatus === SOCKET_STATUS_OFF){
+        if (connectionStatus === SOCKET_STATUS_OFF) {
             setUrl(urlInputValue);
             setConnectionStatus(SOCKET_STATUS_CONNECTING)
         }
-        else if(connectionStatus === SOCKET_STATUS_ON){
+        else if (connectionStatus === SOCKET_STATUS_ON) {
             setConnectionStatus(SOCKET_STATUS_CLOSING)
         }
     };
@@ -32,11 +34,18 @@ const ConnectionBox = () => {
      */
 
     return (
-        <div className={styles.container}>
+        <Container
+            width="100%"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                bgcolor: 'primary.main'
+            }}
+        >
             <div className={styles.url_container}>
                 <input className={styles.url_input} defaultValue={DEFAULT_SOCKET_URL} type="text" onChange={event => urlInputValue = event.target.value} />
-                <button 
-                    className={styles.url_btn} 
+                <button
+                    className={styles.url_btn}
                     onClick={onSocketButton}
                     disabled={connectionStatus === SOCKET_STATUS_ON || connectionStatus === SOCKET_STATUS_OFF ? false : true}
                 >
@@ -53,7 +62,8 @@ const ConnectionBox = () => {
                     Send message
                 </button>
             </div>
-        </div>
+        </Container>
+
     );
 }
 

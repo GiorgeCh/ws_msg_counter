@@ -1,4 +1,6 @@
 import React from 'react';
+import { Container } from '@mui/material';
+
 import styles from '../assets/styles/components/ConnectionBox.module.css';
 import { useMessagesContext } from '../contexts/MessagesContext.js';
 import { useCounterContext } from '../contexts/CounterContext.js';
@@ -14,10 +16,19 @@ const ConnectionBox = () => {
      */
 
     return (
-        <div className={styles.container}>
-            <label className={styles.counter}>{counter}</label>
-            <label>{lastMessage}</label>
-        </div>
+        <Container
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                bgcolor: 'primary.main',
+                minHeight: '300px'
+            }}
+        >
+            <label className={styles.counter}>Message Counter: {counter}</label>
+            <label>Last Message:<br/>{lastMessage}</label>
+        </Container>
+
     );
 }
 

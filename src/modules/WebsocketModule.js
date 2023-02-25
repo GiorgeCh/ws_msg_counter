@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSocketContext } from '../contexts/SocketContext.js';
 import { useMessagesContext } from '../contexts/MessagesContext.js';
 import { useCounterContext } from '../contexts/CounterContext.js';
 import { SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket.js';
 
-
+/**
+  Handles a websocket connection which is contolled by the useSocketContext 
+  TODO: create a Backoff strategy if needed
+ */
 const WebSocketComponent = (props) => {
   const { connectionStatus, setConnectionStatus, url, wsMsg } = useSocketContext();
   const { setLastMessage } = useMessagesContext();
@@ -34,9 +37,14 @@ const WebSocketComponent = (props) => {
     }
   }, [wsMsg]);
 
-  const openSocket = () => {
+  const openSocket = useCallback(() => {
     const ws = new WebSocket(url);
     setSocket(ws);
+
+    ws.onerror = (err) => {
+      console.log("socket error", err);
+      closeSocket();
+    };
 
     ws.onopen = () => {
       console.log("socket has opened");
@@ -44,29 +52,27 @@ const WebSocketComponent = (props) => {
     };
 
     ws.onmessage = (msg) => {
-      //const msgdata = JSON.parse(msg.data);
       const msgdata = msg.data;
       console.log("socket onmessage", msgdata);
       setLastMessage(msgdata);
       addToCounter();
     };
-  };
+  });
 
-  const closeSocket = () => {
+  const closeSocket = useCallback(() => {
     if (!socket) return;
     console.log("socket is closing");
     socket.close();
     setConnectionStatus(SOCKET_STATUS_OFF);
     setSocket(null);
     console.log("socket has closed");
-  };
+  });
 
   return (
-    <div>
+    <>
       {props.children}
-    </div>
+    </>
   );
 }
-
 
 export default WebSocketComponent;
