@@ -9,8 +9,8 @@ import { SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_S
   TODO: create a Backoff strategy if needed
  */
 const WebSocketComponent = (props) => {
-  const { connectionStatus, setConnectionStatus, url, wsMsg } = useSocketContext();
-  const { setLastMessage } = useMessagesContext();
+  const { connectionStatus, changeWsStatus, url, wsMsg, setSendMessage } = useSocketContext();
+  const { changeLastMessage } = useMessagesContext();
   const { addToCounter } = useCounterContext();
 
   const [socket, setSocket] = useState(null);
@@ -32,6 +32,7 @@ const WebSocketComponent = (props) => {
 
   //sends a message when wsMsg is set and the websocket conneciton is on
   useEffect(() => {
+    console.log(' -- -- WebSocketComponent', connectionStatus, wsMsg);
     if (connectionStatus === SOCKET_STATUS_ON && typeof wsMsg === 'string') {
       socket.send(wsMsg);
     }
@@ -48,13 +49,13 @@ const WebSocketComponent = (props) => {
 
     ws.onopen = () => {
       console.log("socket has opened");
-      setConnectionStatus(SOCKET_STATUS_ON);
+      changeWsStatus(SOCKET_STATUS_ON);
     };
 
     ws.onmessage = (msg) => {
       const msgdata = msg.data;
       console.log("socket onmessage", msgdata);
-      setLastMessage(msgdata);
+      changeLastMessage(msgdata);
       addToCounter();
     };
   });
@@ -63,8 +64,9 @@ const WebSocketComponent = (props) => {
     if (!socket) return;
     console.log("socket is closing");
     socket.close();
-    setConnectionStatus(SOCKET_STATUS_OFF);
+    changeWsStatus(SOCKET_STATUS_OFF);
     setSocket(null);
+    setSendMessage();
     console.log("socket has closed");
   });
 

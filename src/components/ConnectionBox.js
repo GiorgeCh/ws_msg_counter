@@ -6,22 +6,22 @@ import { useSocketContext } from '../contexts/SocketContext.js';
 import { DEFAULT_SOCKET_URL, DEFAULT_SOCKET_MESSAGE, SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket.js';
 
 const ConnectionBox = () => {
-    const { connectionStatus, setConnectionStatus, setUrl, setWsMsg } = useSocketContext();
+    const { connectionStatus, changeWsStatus, changeUrl, setSendMessage } = useSocketContext();
     let urlInputValue = DEFAULT_SOCKET_URL;
     let msgInputValue = DEFAULT_SOCKET_MESSAGE;
 
     const onSocketButton = () => {
         if (connectionStatus === SOCKET_STATUS_OFF) {
-            setUrl(urlInputValue);
-            setConnectionStatus(SOCKET_STATUS_CONNECTING)
+            changeUrl(urlInputValue);
+            changeWsStatus(SOCKET_STATUS_CONNECTING)
         }
         else if (connectionStatus === SOCKET_STATUS_ON) {
-            setConnectionStatus(SOCKET_STATUS_CLOSING)
+            changeWsStatus(SOCKET_STATUS_CLOSING)
         }
     };
 
     const onMessageButton = () => {
-        setWsMsg(msgInputValue);
+        setSendMessage(msgInputValue);
     };
 
     /**
