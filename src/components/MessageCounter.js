@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container } from '@mui/material';
 
-import styles from '../assets/styles/components/ConnectionBox.module.css';
+import styles from '../assets/styles/components/MessageCounter.module.css';
+import { CONTAINER_MAIN, CONTAINER_MESSAGE } from '../assets/styles/components/MessageCounter.mui.js';
+
 import { useMessagesContext } from '../contexts/MessagesContext.js';
 import { useCounterContext } from '../contexts/CounterContext.js';
 
-const ConnectionBox = () => {
+const MessageCounter = () => {
     const { lastMessage } = useMessagesContext();
     const { counter } = useCounterContext();
 
@@ -16,20 +18,14 @@ const ConnectionBox = () => {
      */
 
     return (
-        <Container
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                bgcolor: 'primary.main',
-                minHeight: '300px'
-            }}
-        >
+        <Container sx={CONTAINER_MAIN}>
             <label className={styles.counter}>Message Counter: {counter}</label>
-            <label>Last Message:<br/>{lastMessage}</label>
+            <Container sx={CONTAINER_MESSAGE}>
+                <label>{lastMessage}</label>
+            </Container>
         </Container>
 
     );
 }
 
-export default ConnectionBox;
+export default MessageCounter;

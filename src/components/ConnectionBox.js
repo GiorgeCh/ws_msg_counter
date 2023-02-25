@@ -2,6 +2,8 @@ import React from 'react';
 import { Container } from '@mui/material';
 
 import styles from '../assets/styles/components/ConnectionBox.module.css';
+import { CONTAINER_MAIN } from '../assets/styles/components/ConnectionBox.mui.js';
+
 import { useSocketContext } from '../contexts/SocketContext.js';
 import { DEFAULT_SOCKET_URL, DEFAULT_SOCKET_MESSAGE, SOCKET_STATUS_ON, SOCKET_STATUS_OFF, SOCKET_STATUS_CONNECTING, SOCKET_STATUS_CLOSING } from '../constants/socket.js';
 
@@ -36,11 +38,7 @@ const ConnectionBox = () => {
     return (
         <Container
             width="100%"
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                bgcolor: 'primary.main'
-            }}
+            sx={CONTAINER_MAIN}
         >
             <div className={styles.url_container}>
                 <input className={styles.url_input} defaultValue={DEFAULT_SOCKET_URL} type="text" onChange={event => urlInputValue = event.target.value} />
